@@ -11,8 +11,6 @@ const TypeButton = ({ activeType, label }: TypeButtonProps) => {
   const searchType = new URLSearchParams(search).get("type");
   const isActive = activeType === searchType;
 
-  console.log(searchType);
-
   return (
     <Link to={`${pathname}?${new URLSearchParams({ type: activeType })}`}>
       <Button disabled={isActive}>{label}</Button>
