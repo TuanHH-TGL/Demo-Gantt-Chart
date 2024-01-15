@@ -1,11 +1,10 @@
 import { useCallback } from "react";
 import { initializeGTST } from "./helper";
 import "gantt-schedule-timeline-calendar/dist/style.css";
-import { useLocation } from "react-router-dom";
+import useSearchType from "@/utils/use-search-type";
 
 const GanttScheduleTimeline = () => {
-  const { search } = useLocation();
-  const searchType = new URLSearchParams(search).get("type")!;
+  const { searchType } = useSearchType();
 
   const callback = useCallback(
     (element: HTMLDivElement) => {

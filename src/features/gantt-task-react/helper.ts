@@ -1,3 +1,8 @@
+import {
+  memberEffortGantt,
+  projectTaskGantt,
+  projectsProgressGantt,
+} from "@/constants/mock-data";
 import { Task } from "gantt-task-react";
 
 // Create mock tasks
@@ -12,24 +17,74 @@ export const tasks: Task[] = [
     isDisabled: true,
     styles: { progressColor: "#ffbb54", progressSelectedColor: "#ff9e0d" },
   },
-  // {
-  //   start: new Date(2020, 1, 3),
-  //   end: new Date(2020, 1, 4),
-  //   name: "Design",
-  //   id: "Task 1",
-  //   type: "task",
-  //   progress: 60,
-  //   isDisabled: false,
-  //   styles: { progressColor: "#5ac8fa", progressSelectedColor: "#007aff" },
-  // },
-  // {
-  //   start: new Date(2020, 1, 5),
-  //   end: new Date(2020, 1, 6),
-  //   name: "Development",
-  //   id: "Task 2",
-  //   type: "task",
-  //   progress: 75,
-  //   isDisabled: false,
-  //   styles: { progressColor: "#34c759", progressSelectedColor: "#30d158" },
-  // },
 ];
+
+export const getTasks = (searchType: string): Task[] => {
+  if (searchType === "1") {
+    const mockData = projectTaskGantt;
+    const tasks = mockData.project.tasks.map<Task>((task) => {
+      return {
+        id: task.id,
+        name: task.name,
+        start: task.start,
+        end: task.end,
+        progress: task.progress,
+        type: "task",
+        dependencies: task.dependencies,
+      };
+    });
+    return tasks;
+  }
+  if (searchType === "2") {
+    const mockData = memberEffortGantt;
+    const tasks: Task[] = [];
+    for (const member of mockData.members) {
+      tasks.push({
+        id: member.id,
+        name: member.name,
+        type: "project",
+        start: member.tasks[0].start,
+        end: member.tasks[member.tasks.length - 1].end,
+        progress: 0,
+      });
+      for (const task of member.tasks) {
+        tasks.push({
+          id: task.id,
+          name: task.name,
+          start: task.start,
+          end: task.end,
+          progress: task.progress,
+          type: "task",
+          dependencies: task.dependencies,
+          project: member.id,
+        });
+      }
+    }
+    return tasks;
+  }
+  const mockData = projectsProgressGantt;
+  const tasks: Task[] = [];
+  for (const project of mockData.projects) {
+    tasks.push({
+      id: project.id,
+      name: project.name,
+      type: "project",
+      start: project.tasks[0].start,
+      end: project.tasks[project.tasks.length - 1].end,
+      progress: 0,
+    });
+    for (const task of project.tasks) {
+      tasks.push({
+        id: task.id,
+        name: task.name,
+        start: task.start,
+        end: task.end,
+        progress: task.progress,
+        type: "task",
+        dependencies: task.dependencies,
+        project: project.id,
+      });
+    }
+  }
+  return tasks;
+};
