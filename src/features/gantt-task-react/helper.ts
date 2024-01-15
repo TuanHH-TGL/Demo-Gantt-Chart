@@ -62,29 +62,41 @@ export const getTasks = (searchType: string): Task[] => {
     }
     return tasks;
   }
-  const mockData = projectsProgressGantt;
-  const tasks: Task[] = [];
-  for (const project of mockData.projects) {
-    tasks.push({
-      id: project.id,
-      name: project.name,
-      type: "project",
-      start: project.tasks[0].start,
-      end: project.tasks[project.tasks.length - 1].end,
-      progress: 0,
-    });
-    for (const task of project.tasks) {
+  if (searchType === "3") {
+    const mockData = projectsProgressGantt;
+    const tasks: Task[] = [];
+    for (const project of mockData.projects) {
       tasks.push({
-        id: task.id,
-        name: task.name,
-        start: task.start,
-        end: task.end,
-        progress: task.progress,
-        type: "task",
-        dependencies: task.dependencies,
-        project: project.id,
+        id: project.id,
+        name: project.name,
+        type: "project",
+        start: project.tasks[0].start,
+        end: project.tasks[project.tasks.length - 1].end,
+        progress: 0,
       });
+      for (const task of project.tasks) {
+        tasks.push({
+          id: task.id,
+          name: task.name,
+          start: task.start,
+          end: task.end,
+          progress: task.progress,
+          type: "task",
+          dependencies: task.dependencies,
+          project: project.id,
+        });
+      }
     }
+    return tasks;
   }
-  return tasks;
+  return [
+    {
+      id: "Task 1",
+      name: "Redesign website",
+      start: new Date("2021-01-01"),
+      end: new Date("2021-01-02"),
+      progress: 20,
+      type: "task",
+    },
+  ];
 };
