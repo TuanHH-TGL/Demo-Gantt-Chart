@@ -1,20 +1,12 @@
 import { Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import { twMerge } from "tailwind-merge";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import LinkButton from "./link-button";
+import { Outlet } from "react-router-dom";
+import ControlSide from "./control-side";
+import useValidateRoute from "./use-validate-url";
 
 const RootLayout = () => {
-  // Get current path name
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (pathname === "/") {
-      navigate("/gantt-schedule-timeline-calendar");
-    }
-  }, [pathname, navigate]);
+  useValidateRoute();
 
   return (
     <Theme>
@@ -27,18 +19,7 @@ const RootLayout = () => {
         >
           <Outlet />
         </div>
-        <div
-          className={twMerge(
-            "flex-[3] flex flex-col h-full items-start justify-center gap-5",
-            "border-[1px] border-[gray] p-5"
-          )}
-        >
-          <LinkButton
-            activePath="/gantt-schedule-timeline-calendar"
-            label="Gantt Schedule Timeline Calendar"
-          />
-          <LinkButton activePath="/gantt-task" label="Gantt Task" />
-        </div>
+        <ControlSide />
       </div>
     </Theme>
   );
